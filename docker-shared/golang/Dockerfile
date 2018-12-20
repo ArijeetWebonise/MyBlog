@@ -21,7 +21,7 @@ RUN go get -u github.com/gorilla/sessions
 RUN go get -u github.com/gorilla/csrf
 RUN go get -u github.com/tdewolff/minify
 
-ENV GR_PORT ":9999"
+ENV PORT ":9999"
 ENV GR_CSRF_AUTH_KEY "8d0e5181ce96016b027ac2a792ade2fe5f22a5811583d85b0c35ef2b0aa498ea"
 ENV GR_SESSION_AUTH_KEY "8d0e5181ce96016b027ac2a792ade2fe5f1fa5811583d85b0c35ef2b0aa498ea"
 ENV GR_DB_USERNAME "local"

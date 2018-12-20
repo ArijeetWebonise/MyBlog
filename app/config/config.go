@@ -39,10 +39,12 @@ type DbConfig struct {
 
 //ConstructAppConfig prepares <AppConfig> from environment variables
 func (appConfig *AppConfig) ConstructAppConfig() *AppConfig {
-	viper.SetEnvPrefix("GR")
+	viper.SetEnvPrefix("")
 	viper.AutomaticEnv()
 
 	appConfig.Port = appConfig.validateEnvVar("PORT")
+	viper.SetEnvPrefix("GR")
+	viper.AutomaticEnv()
 	appConfig.CSRFAuthkey = appConfig.validateEnvVar("CSRF_AUTH_KEY")
 	appConfig.SessionAuthkey = appConfig.validateEnvVar("SESSION_AUTH_KEY")
 
