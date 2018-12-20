@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/ArijeetBaruah/MyBlog/pkg/logger"
 	"github.com/spf13/viper"
 )
@@ -39,10 +41,7 @@ type DbConfig struct {
 
 //ConstructAppConfig prepares <AppConfig> from environment variables
 func (appConfig *AppConfig) ConstructAppConfig() *AppConfig {
-	viper.SetEnvPrefix("")
-	viper.AutomaticEnv()
-
-	appConfig.Port = appConfig.validateEnvVar("PORT")
+	appConfig.Port = os.Getenv("PORT")
 	viper.SetEnvPrefix("GR")
 	viper.AutomaticEnv()
 	appConfig.CSRFAuthkey = appConfig.validateEnvVar("CSRF_AUTH_KEY")
