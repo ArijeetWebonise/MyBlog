@@ -66,7 +66,7 @@ func main() {
 
 	a.InitRoute()
 
-	if err := http.ListenAndServe(cfg.Port, a.Router); err != nil {
+	if err := http.ListenAndServe(":"+cfg.Port, a.Router); err != nil {
 		panic(err)
 	}
 }
