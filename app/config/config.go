@@ -1,9 +1,6 @@
 package config
 
 import (
-	"os"
-
-	"github.com/ArijeetBaruah/MyBlog/pkg/logger"
 	"github.com/spf13/viper"
 )
 
@@ -15,7 +12,6 @@ type Config interface {
 //AppConfig defines properties required by application
 type AppConfig struct {
 	DB             DbConfig
-	Logger         logger.ILogger
 	Port           string
 	CSRFAuthkey    string
 	SessionAuthkey string
@@ -41,30 +37,22 @@ type DbConfig struct {
 
 //ConstructAppConfig prepares <AppConfig> from environment variables
 func (appConfig *AppConfig) ConstructAppConfig() *AppConfig {
-	appConfig.Port = os.Getenv("PORT")
+	viper.SetEnvPrefix("")
+	viper.AutomaticEnv()
+	appConfig.Port = viper.GetString("PORT")
 	viper.SetEnvPrefix("GR")
 	viper.AutomaticEnv()
-	appConfig.CSRFAuthkey = appConfig.validateEnvVar("CSRF_AUTH_KEY")
-	appConfig.SessionAuthkey = appConfig.validateEnvVar("SESSION_AUTH_KEY")
+	appConfig.CSRFAuthkey = viper.GetString("CSRF_AUTH_KEY")
+	appConfig.SessionAuthkey = viper.GetString("SESSION_AUTH_KEY")
 
-	appConfig.DB.DbUserName = appConfig.validateEnvVar("DB_USERNAME")
-	appConfig.DB.DbPassword = appConfig.validateEnvVar("DB_PASSWORD")
-	appConfig.DB.DbHost = appConfig.validateEnvVar("DB_HOST")
-	appConfig.DB.DbName = appConfig.validateEnvVar("DB_NAME")
-	appConfig.DB.DbDriverName = appConfig.validateEnvVar("DB_DRIVER_NAME")
-	appConfig.DB.DbDataSource = appConfig.validateEnvVar("DB_DATA_SOURCE")
+	appConfig.DB.DbUserName = viper.GetString("DB_USERNAME")
+	appConfig.DB.DbPassword = viper.GetString("DB_PASSWORD")
+	appConfig.DB.DbHost = viper.GetString("DB_HOST")
+	appConfig.DB.DbName = viper.GetString("DB_NAME")
+	appConfig.DB.DbDriverName = viper.GetString("DB_DRIVER_NAME")
+	appConfig.DB.DbDataSource = viper.GetString("DB_DATA_SOURCE")
 	appConfig.GraphQL.GraphiQL = viper.GetBool("GRAPHIQL")
 	appConfig.GraphQL.Playground = viper.GetBool("GRAPHQL_PLAYGROUND")
 	appConfig.GraphQL.Pretty = viper.GetBool("GRAPHQL_PRETTY")
 	return appConfig
-}
-
-//validateEnvVar fetches environment variable value for a given <key> if present
-//else panics
-func (appConfig *AppConfig) validateEnvVar(key string) string {
-	value := viper.GetString(key)
-	if value == "" {
-		appConfig.Logger.Panicf("%s is not set", key)
-	}
-	return value
 }

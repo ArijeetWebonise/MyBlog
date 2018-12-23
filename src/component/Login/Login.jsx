@@ -29,10 +29,13 @@ class LoginComponent extends Component {
 
   onSubmit(event) {
     const isValid = this.OnValidate();
+    const { state } = this;
+    event.preventDefault();
     if (!isValid) {
-      event.preventDefault();
       return false;
     }
+
+    console.log(state.email, state.password);
 
     return true;
   }
@@ -40,12 +43,12 @@ class LoginComponent extends Component {
   OnValidate() {
     const { state } = this;
     const error = [];
-    if (!_.isEmpty(state.email)) {
-      error.push('Email can\' be empty');
+    if (_.isEmpty(state.email)) {
+      error.push('Email can\'t be empty');
     }
 
-    if (!_.isEmpty(state.password)) {
-      error.push('Password can\' be empty');
+    if (_.isEmpty(state.password)) {
+      error.push('Password can\'t be empty');
     }
 
     if (!_.isEmpty(error)) {
@@ -68,9 +71,8 @@ class LoginComponent extends Component {
     const { error } = this.state;
 
     return (
-      <div className="container">
-        <h1 className="form-heading">login Form</h1>
-        <div className="login-form">
+      <div className="container login-container">
+        <div className="login-form align-middle">
           <div className="main-div">
             <div className="panel">
               <h2>Admin Login</h2>
