@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropType from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Login } from '../../action/login';
 import './Login.sass';
 
 class LoginComponent extends Component {
@@ -29,13 +32,13 @@ class LoginComponent extends Component {
 
   onSubmit(event) {
     const isValid = this.OnValidate();
-    const { state } = this;
     event.preventDefault();
     if (!isValid) {
       return false;
     }
+    const { email, password } = this.state;
 
-    console.log(state.email, state.password);
+    this.props.Login({ email, password });
 
     return true;
   }
@@ -128,4 +131,16 @@ class LoginComponent extends Component {
   }
 }
 
-export default LoginComponent;
+LoginComponent.propTypes = {
+  Login: PropType.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  login: state.login,
+});
+
+const mapActionToProps = dispatch => ({
+  Login: ({ user, pass }) => { dispatch(Login(dispatch, { user, pass })); },
+});
+
+export default connect(mapStateToProps, mapActionToProps)(LoginComponent);

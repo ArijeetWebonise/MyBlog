@@ -1,11 +1,21 @@
 version: '3'
 services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    expose:
+      - '6379'
+    volumes:
+      - ./docker-data/redis/data:/bitnami/redis/data
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: local
-      POSTGRES_USER: local
+      POSTGRES_PASSWORD: baruah
+      POSTGRES_USER: arijeet
       POSTGRES_DB: MyBlog
     volumes:
       - .:/code
@@ -23,10 +33,18 @@ services:
       - MyBlog
   golang:
     build: ./docker-shared/golang
+    environment:
+      GR_DB_USERNAME: arijeet
+      GR_DB_PASSWORD: baruah
+      GR_DB_NAME: MyBlog
+      GR_DB_DATA_SOURCE: "host=db user=arijeet password=baruah dbname=MyBlog sslmode=disable"
+    depends_on:
+      - db
+      - redis
     volumes:
       - .:/go/src/github.com/ArijeetBaruah/MyBlog
     ports:
-      - 9999:9999
+      - 80:9999
     networks:
       - MyBlog
 

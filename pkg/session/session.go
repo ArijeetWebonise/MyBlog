@@ -42,12 +42,6 @@ type UserSession struct {
 	SessionID string
 }
 
-//ZohoToken wrapper for zoho tokens
-type ZohoToken struct {
-	Access  string
-	Refresh string
-}
-
 //SetFlash set flash message
 func (fl *CookieStoreServiceImpl) SetFlash(r *http.Request, w http.ResponseWriter, message string, alertType string) error {
 

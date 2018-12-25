@@ -1,4 +1,5 @@
 import axios from 'axios';
+import urlEndpoint from '../util/urlEndpoint';
 
 export function LoginResponse(user) {
   return {
@@ -29,10 +30,6 @@ export function SetLoginFormPass(data) {
 }
 
 export function Login(dispatch, form = { user: '', pass: '' }) {
-  const csrfElement = document.getElementById('crsf');
-  const ajaxRequest = axios.create({
-    headers: { 'X-CSRF-Token': csrfElement.children[0].value },
-  });
 
   const data = `{
     login(email: "${form.user}", password: "${form.pass}"){
@@ -40,7 +37,7 @@ export function Login(dispatch, form = { user: '', pass: '' }) {
     }
   }`;
 
-  ajaxRequest.get(`/graphql?query=${encodeURI(data)}`)
+  axios.post(`${urlEndpoint.api}?query=${encodeURI(data)}`)
     .then((res) => {
       if (res.data.errors !== undefined) {
         dispatch(LoginFailed(res.data.errors));

@@ -40,3 +40,4 @@ RUN go get github.com/graphql-go/graphql
 RUN go get github.com/graphql-go/handler
 RUN go get github.com/gin-gonic/gin
 RUN go get github.com/gin-gonic/contrib/static
+RUN go get -u github.com/go-redis/redis

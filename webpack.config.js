@@ -20,6 +20,9 @@ const config = {
   devServer: {
     contentBase: DIST_DIR,
     hot: true,
+    proxy: {
+      '/graphql': 'http://localhost/graphql',
+    },
     inline: true,
     open: true,
     historyApiFallback: true,
